@@ -1,4 +1,4 @@
-from mycroft_bus_client.message import Message
+from ovos_bus_client.message import Message
 from ovos_PHAL.detection import is_respeaker_2mic
 from ovos_plugin_manager.phal import PHALPlugin
 from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led, get_button
