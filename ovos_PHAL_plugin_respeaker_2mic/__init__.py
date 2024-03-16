@@ -1,5 +1,4 @@
 from ovos_bus_client.message import Message
-from ovos_PHAL.detection import is_respeaker_2mic
 from ovos_plugin_manager.phal import PHALPlugin
 from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led, get_button
 
@@ -7,11 +6,18 @@ from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led, get_button
 class Respeaker2MicValidator:
     @staticmethod
     def validate(config=None):
-        # TODO does it work for 2 and 6 mic ?
-        return is_respeaker_2mic()
+        if exists('/home/ovos/.config/mycroft/i2c_platform'):
+            with open('/home/ovos/.config/mycroft/i2c_platform', 'r') as f:
+                platform = f.readline()
+            LOG.debug(f"2mic platform {platform}")
+            if platform == 'wm8960':
+                return True
+        return False
 
 
 class Respeaker2MicControlPlugin(PHALPlugin):
+    validator = Respeaker2MicValidator
+
     def __init__(self, bus=None, config=None):
         super().__init__(bus=bus, name="ovos-PHAL-plugin-respeaker-2mic", config=config)
         self.button = get_button()
