@@ -1,16 +1,20 @@
+from os.path import exists
+
 from ovos_bus_client.message import Message
 from ovos_plugin_manager.phal import PHALPlugin
 from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led, get_button
-
+from ovos_utils.log import LOG
 
 class Respeaker2MicValidator:
     @staticmethod
     def validate(config=None):
-        if exists('/home/ovos/.config/mycroft/i2c_platform'):
-            with open('/home/ovos/.config/mycroft/i2c_platform', 'r') as f:
+        i2c_platform_dir = config.get("i2c_platform", "/home/ovos/.config/mycroft/i2c_platform")
+        LOG.debug(f"i2c_platform_dir is {i2c_platform_dir}")
+        if exists(i2c_platform_dir):
+            with open(i2c_platform_dir, "r") as f:
                 platform = f.readline()
             LOG.debug(f"2mic platform {platform}")
-            if platform == 'wm8960':
+            if platform == "wm8960":
                 return True
         return False
 
