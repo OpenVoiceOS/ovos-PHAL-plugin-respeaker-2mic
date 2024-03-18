@@ -2,10 +2,11 @@ from os.path import exists
 
 from ovos_bus_client.message import Message
 from ovos_plugin_manager.phal import PHALPlugin
-from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led, get_button
+from ovos_plugin_manager.templates.phal import PHALValidator
+from ovos_PHAL_plugin_respeaker_2mic.drivers import get_led # TODO fix for kernel 6.6 , get_button
 from ovos_utils.log import LOG
 
-class Respeaker2MicValidator:
+class Respeaker2MicValidator(PHALValidator):
     @staticmethod
     def validate(config=None):
         i2c_platform_dir = config.get("i2c_platform", "/home/ovos/.config/mycroft/i2c_platform")
@@ -24,10 +25,11 @@ class Respeaker2MicControlPlugin(PHALPlugin):
 
     def __init__(self, bus=None, config=None):
         super().__init__(bus=bus, name="ovos-PHAL-plugin-respeaker-2mic", config=config)
-        self.button = get_button()
-        self.button.on_press(self.handle_button_press)
-        self.button.on_button_down(self.handle_button_down)
-        self.button.on_button_up(self.handle_button_up)
+        # TODO: Fix for kernel 6.6
+        # self.button = get_button()
+        # self.button.on_press(self.handle_button_press)
+        # self.button.on_button_down(self.handle_button_down)
+        # self.button.on_button_up(self.handle_button_up)
         self.led = get_led()
         self.led.wakeup()
 
