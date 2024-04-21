@@ -15,7 +15,7 @@ class Respeaker2MicValidator(PHALValidator):
             with open(i2c_platform_dir, "r") as f:
                 platform = f.readline()
             LOG.debug(f"2mic platform {platform}")
-            if platform == "wm8960":
+            if platform.strip() == "wm8960":
                 return True
         return False
 
